@@ -1,23 +1,15 @@
-terraform {
-  required_version = ">= 1.6"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
+module "demo_bucket" {
+  source = "./modules/s3-bucket"
 
-provider "aws" {
-  region = "ap-south-1"
-}
-
-resource "aws_s3_bucket" "demo" {
-  bucket = var.bucket_name
+  bucket_name = var.bucket_name
+  environment = var.environment
 
   tags = {
-    Environment = var.environment
-    ManagedBy   = "terraform"
-    Owner       = "platform-team"
+    Owner = "platform-team"
   }
+}
+
+moved {
+  from = aws_s3_bucket.demo
+  to   = module.demo_bucket.aws_s3_bucket.this
 }
