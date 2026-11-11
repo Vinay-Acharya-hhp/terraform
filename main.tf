@@ -9,7 +9,3 @@ module "demo_bucket" {
   }
 }
 
-moved {
-  from = aws_s3_bucket.demo
-  to   = module.demo_bucket.aws_s3_bucket.this
-}
