@@ -38,3 +38,13 @@ variable "node_count" {
   type    = number
   default = 2
 }
+
+variable "db_instance_class" {
+  type    = string
+  default = "db.t4g.micro"
+}
+
+variable "db_username" {
+  type    = string
+  default = "admin"
+}
