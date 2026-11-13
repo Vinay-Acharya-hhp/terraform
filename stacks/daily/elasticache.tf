@@ -10,9 +10,9 @@ resource "aws_elasticache_replication_group" "main" {
   engine               = "valkey"
   engine_version       = "7.2"
   parameter_group_name = "default.valkey7"
-  node_type            = "cache.t4g.micro"
+  node_type = "cache.t3.micro"
   port                 = 6379
-
+  preferred_cache_cluster_azs = var.redis_az == null ? null : [var.redis_az]
   # Single node, cluster mode disabled
   num_cache_clusters         = 1
   automatic_failover_enabled = false

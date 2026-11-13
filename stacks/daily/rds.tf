@@ -17,7 +17,7 @@ resource "aws_db_instance" "main" {
   engine         = "mysql"
   engine_version = "8.4"
   instance_class = var.db_instance_class
-
+  availability_zone = var.db_az
   allocated_storage = 20
   storage_type      = "gp3"
   storage_encrypted = true

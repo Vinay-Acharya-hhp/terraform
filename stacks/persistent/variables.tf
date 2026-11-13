@@ -22,7 +22,9 @@ variable "vpc_cidr" {
 variable "alb_dns_name" {
   type        = string
   description = "DNS name of the ALB. Empty until the daily stack has created it."
-  default     = ""
+  #kubectl -n epharmacy get ingress epharmacy-api -w
+  #terraform apply -var="alb_dns_name=$ALB_DNS"
+  default     = "k8s-epharmac-epharmac-59a2146c33-831903433.ap-south-1.elb.amazonaws.com"
 }
 
 variable "github_repo" {

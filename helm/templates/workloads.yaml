@@ -1,0 +1,64 @@
+{{- range $name, $svc := .Values.services }}
+{{- if $svc.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ $name }}
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+    spec:
+      containers:
+        - name: {{ $name }}
+          image: "{{ $.Values.registry }}/{{ $svc.image }}:{{ $.Values.tag }}"
+          imagePullPolicy: Always
+          ports:
+            - containerPort: {{ $svc.port }}
+          env:
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:MaxRAMPercentage=70"
+            {{- if $svc.dbUrlKey }}
+            - name: DB_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: epharmacy-config
+                  key: {{ $svc.dbUrlKey }}
+            {{- end }}
+          {{- if $svc.useConfig }}
+          envFrom:
+            - configMapRef:
+                name: epharmacy-config
+            - secretRef:
+                name: epharmacy-secrets
+          {{- end }}
+          resources:
+{{ toYaml $.Values.resources | indent 12 }}
+          readinessProbe:
+            tcpSocket:
+              port: {{ $svc.port }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ $name }}
+  ports:
+    - port: {{ $svc.port }}
+      targetPort: {{ $svc.port }}
+      protocol: TCP
+---
+{{- end }}
+{{- end }}

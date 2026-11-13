@@ -48,3 +48,14 @@ variable "db_username" {
   type    = string
   default = "admin"
 }
+
+variable "db_az" {
+  type        = string
+  description = "Pin RDS to one AZ. null lets AWS choose."
+  default     = null
+}
+
+variable "redis_az" {
+  type    = string
+  default = null
+}
