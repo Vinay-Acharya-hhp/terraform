@@ -24,7 +24,7 @@ variable "alb_dns_name" {
   description = "DNS name of the ALB. Empty until the daily stack has created it."
   #kubectl -n epharmacy get ingress epharmacy-api -w
   #terraform apply -var="alb_dns_name=$ALB_DNS"
-  default     = "k8s-epharmac-epharmac-59a2146c33-831903433.ap-south-1.elb.amazonaws.com"
+  default     = ""
 }
 
 variable "github_repo" {

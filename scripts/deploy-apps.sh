@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CHART="${1:?usage: $0 <path-to-helm-chart>}"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CHART="${1:-$ROOT/helm}"
 NS=epharmacy
 REL=epharmacy
 
